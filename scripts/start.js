@@ -16,9 +16,11 @@ const openBrowser = require('react-dev-utils/openBrowser');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const clearConsole = require('react-dev-utils/clearConsole');
 const { checkBrowsers } = require('react-dev-utils/browsersHelper');
-const { choosePort, createCompiler, prepareUrls } = require('react-dev-utils/WebpackDevServerUtils');
-const { DEFAULT_PORT, HOST } = require('../config/constant');
+const { choosePort, createCompiler, prepareUrls, prepareProxy } = require('react-dev-utils/WebpackDevServerUtils');
 const webpackConfigFactory = require('../config/webpack/webpack.config');
+const getClientEnvironment = require('../config/env');
+
+const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
 
 /** 是否终端 */
 const isInteractive = process.stdout.isTTY;
@@ -27,6 +29,9 @@ const isInteractive = process.stdout.isTTY;
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) process.exit(1);
 
 // process.stdout.write(fs.realpathSync(process.cwd()));
+const DEFAULT_PORT = parseInt(process.env.PORT || '3000', 10);
+
+const HOST = process.env.HOST || '0.0.0.0';
 
 /**
  * checkBrowsers
@@ -56,8 +61,23 @@ checkBrowsers(paths.appPath, isInteractive)
       urls,
     });
 
-    const devServer = new WebpackDevServer({ host: HOST, port }, compiler);
+    // const proxyConfig = prepareProxy(getProxyConfig(), paths.appPublic, paths.publicUrlOrPath);
 
+    console.log(getProxyConfig());
+
+    // /** 创建并启动webpack devserver */
+    const devServer = new WebpackDevServer(
+      {
+        host: HOST,
+        port,
+        proxy: getProxyConfig(),
+        /** 如果为 true ，开启虚拟服务器时，为你的代码进行压缩。加快开发流程和优化的作用。 */
+        compress: true,
+      },
+      compiler,
+    );
+
+    // 开始后的回调
     devServer.startCallback(() => {
       if (isInteractive) {
         clearConsole();
@@ -73,3 +93,12 @@ checkBrowsers(paths.appPath, isInteractive)
     }
     process.exit(1);
   });
+
+/** 获取项目中proxy配置 */
+function getProxyConfig() {
+  try {
+    return require(paths.appProxyConfig);
+  } catch (err) {
+    return undefined;
+  }
+}

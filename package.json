@@ -1,9 +1,9 @@
 {
   "name": "sentimental-react",
   "version": "1.0.0",
-  "description": "awesomeao-react-scripts usage example description",
+  "description": "sentimental-react usage example description",
   "bin": {
-    "sentimentality": "./bin/sentimental-react.js"
+    "sentimental-react": "./bin/sentimental-react.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

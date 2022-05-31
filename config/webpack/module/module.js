@@ -7,6 +7,7 @@ const getStyleLoaders = require('../styleLoaders');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 
+/** 最小转换为base64的图片大小，10kb左右 */
 const imageInlineSizeLimit = parseInt(process.env.IMAGE_INLINE_SIZE_LIMIT || '10000');
 
 /** 是否启用sourcemap 默认启用 */
