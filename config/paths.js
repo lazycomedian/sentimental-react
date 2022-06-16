@@ -40,17 +40,18 @@ module.exports = {
   dotenv: resolveApp('.env'),
   appPath: resolveApp('.'),
   appPublic: resolveApp('public'),
+  appBuild: resolveApp(process.env.BUILD_PATH || 'build'),
   appHtml: resolveApp('public/index.html'),
   appIndexJs: resolveModule(resolveApp, 'src/index'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
+  appJsConfig: resolveApp('jsconfig.json'),
   appTsConfig: resolveApp('tsconfig.json'),
   appNodeModules: resolveApp('node_modules'),
   appAssets: resolveApp('src/assets'),
   appDist: resolveApp('dist'),
   appDistStatic: resolveApp('dist/static'),
-  appConfig: resolveApp('config'),
-  appConfigProxy: resolveApp('config/proxy'),
+  appProxyConfig: resolveApp('proxy.config'),
   yarnLockFile: resolveApp('yarn.lock'),
   appTsBuildInfoFile: resolveApp('node_modules/.cache/tsconfig.tsbuildinfo'),
   publicUrlOrPath: getPublicUrlOrPath(
@@ -58,6 +59,7 @@ module.exports = {
     require(resolveApp('package.json')).homepage,
     process.env.PUBLIC_URL,
   ),
+  swSrc: resolveModule(resolveApp, 'src/service-worker'),
 };
 
 module.exports.moduleFileExtensions = moduleFileExtensions;

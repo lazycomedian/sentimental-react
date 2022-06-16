@@ -4,6 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const paths = require('./paths');
 
+const dotenvExpand = require('dotenv-expand');
+const dotenv = require('dotenv');
+
 // 从cache中删除指定的模块 可重新加载
 delete require.cache[require.resolve('./paths')];
 
@@ -23,8 +26,8 @@ const dotenvFilePaths = [
 // 如果这个文件 Dotenv不会修改任何环境变量
 dotenvFilePaths.forEach(dotenvFilePath => {
   if (fs.existsSync(dotenvFilePath)) {
-    const dotenvExpand = require('dotenv-expand');
-    dotenvExpand(require('dotenv').config({ path: dotenvFilePath }));
+    // const a = dotenvExpand(dotenv.config({ path: dotenvFilePath }));
+    dotenvExpand(dotenv.config({ path: dotenvFilePath }));
   }
 });
 
@@ -38,8 +41,8 @@ process.env.NODE_PATH = (process.env.NODE_PATH || '')
   .map(folder => path.resolve(appDirectory, folder))
   .join(path.delimiter);
 
-/** 自定义环境变量规则需遵循固定的前缀，在这里是 AWESOME_APP_XXX */
-const AWESOME_APP = /^AWESOME_APP_/i;
+/** 自定义环境变量规则需遵循固定的前缀，在这里是 SENTIMENTAL_XXX */
+const SENTIMENTAL = /^SENTIMENTAL_/i;
 
 /**
  * @description 获取环境变量的值
@@ -47,7 +50,7 @@ const AWESOME_APP = /^AWESOME_APP_/i;
  */
 function getClientEnvironment(publicUrl) {
   const raw = Object.keys(process.env)
-    .filter(key => AWESOME_APP.test(key))
+    .filter(key => SENTIMENTAL.test(key))
     .reduce(
       (env, key) => {
         env[key] = process.env[key];
@@ -66,7 +69,7 @@ function getClientEnvironment(publicUrl) {
 
   /** 将所有环境变量配置项的值转化为string类型 可以用于webpack plugin中  */
   const stringified = {
-    'process.evn': Object.keys(raw).reduce((env, key) => {
+    'process.env': Object.keys(raw).reduce((env, key) => {
       env[key] = JSON.stringify(raw[key]);
       return env;
     }, {}),

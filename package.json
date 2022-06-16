@@ -1,17 +1,20 @@
 {
-  "name": "sentimental-react",
-  "version": "1.0.0",
-  "description": "awesomeao-react-scripts usage example description",
+  "name": "sentimental-react-scripts",
+  "version": "0.1.4",
+  "description": "Configuration and scripts for Sentimental React App from React Scripts",
   "bin": {
-    "sentimentality": "./bin/sentimental-react.js"
+    "sentimental-react-scripts": "./bin/sentimental-react-scripts.js"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lazycomedian/sentimental-react-scripts.git"
   },
+  "types": "./lib/sentimental-react.d.ts",
   "files": [
     "bin",
     "scripts",
-    "config"
+    "config",
+    "lib"
   ],
   "keywords": [],
   "author": "",
@@ -66,8 +69,8 @@
     "workbox-webpack-plugin": "^6.4.1"
   },
   "devDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "peerDependencies": {
     "react": ">= 16",
