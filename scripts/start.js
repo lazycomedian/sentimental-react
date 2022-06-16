@@ -63,14 +63,17 @@ checkBrowsers(paths.appPath, isInteractive)
 
     // const proxyConfig = prepareProxy(getProxyConfig(), paths.appPublic, paths.publicUrlOrPath);
 
-    console.log(getProxyConfig());
-
     // /** 创建并启动webpack devserver */
     const devServer = new WebpackDevServer(
       {
         host: HOST,
         port,
         proxy: getProxyConfig(),
+        /** 声明请求重定向 用于解决本地devserver 刷新后404的问题 */
+        historyApiFallback: {
+          disableDotRule: true,
+          index: paths.publicUrlOrPath,
+        },
         /** 如果为 true ，开启虚拟服务器时，为你的代码进行压缩。加快开发流程和优化的作用。 */
         compress: true,
       },

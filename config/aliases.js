@@ -6,6 +6,8 @@ const paths = require('./paths');
 const chalk = require('react-dev-utils/chalk');
 const resolve = require('resolve');
 
+const useTypeScript = fs.existsSync(paths.appTsConfig);
+
 /**
  * 根据ts/js config 文件中的baseurl获取额外路径
  *
@@ -62,7 +64,28 @@ function getWebpackAliases(options = {}) {
   const baseUrlResolved = path.resolve(paths.appPath, baseUrl);
 
   if (path.relative(paths.appPath, baseUrlResolved) === '') {
-    return { [process.env.RESOLVE_ALIAS_SRC || '@']: paths.appSrc };
+    return { [getAppSrcAlias(options) || 'src']: paths.appSrc };
+  }
+}
+
+/**
+ * 根据ts/js config文件中的paths定义额外路径
+ * @param {*} options
+ */
+function getAppSrcAlias(options) {
+  try {
+    const pathsConfig = options.paths;
+    let resultKey = null;
+    for (const key in pathsConfig) {
+      if (String(pathsConfig[key]).indexOf('src') !== -1) {
+        const mainKeyIndex = key.indexOf('/');
+        resultKey = key.slice(0, mainKeyIndex);
+        break;
+      }
+    }
+    return resultKey;
+  } catch (err) {
+    return null;
   }
 }
 

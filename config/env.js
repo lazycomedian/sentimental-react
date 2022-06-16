@@ -41,8 +41,8 @@ process.env.NODE_PATH = (process.env.NODE_PATH || '')
   .map(folder => path.resolve(appDirectory, folder))
   .join(path.delimiter);
 
-/** 自定义环境变量规则需遵循固定的前缀，在这里是 REACT_APP_XXX */
-const REACT_APP = /^REACT_APP_/i;
+/** 自定义环境变量规则需遵循固定的前缀，在这里是 SENTIMENTAL_XXX */
+const SENTIMENTAL = /^SENTIMENTAL_/i;
 
 /**
  * @description 获取环境变量的值
@@ -50,7 +50,7 @@ const REACT_APP = /^REACT_APP_/i;
  */
 function getClientEnvironment(publicUrl) {
   const raw = Object.keys(process.env)
-    .filter(key => REACT_APP.test(key))
+    .filter(key => SENTIMENTAL.test(key))
     .reduce(
       (env, key) => {
         env[key] = process.env[key];
